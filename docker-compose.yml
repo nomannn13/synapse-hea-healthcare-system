@@ -1,0 +1,39 @@
+services:
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_demo_password
+      MYSQL_DATABASE: hea_database
+    ports:
+      - "3306:3306"
+    volumes:
+      - hea_mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot_demo_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root_demo_password
+      DB_NAME: hea_database
+      JWT_SECRET: docker-demo-secret-change-before-deployment
+      OTP_ENABLED: "true"
+      DEMO_OTP: "true"
+      CORS_ORIGINS: http://localhost:4000
+    ports:
+      - "4000:4000"
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  hea_mysql_data:
