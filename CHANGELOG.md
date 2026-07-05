@@ -1,42 +1,19 @@
 # Changelog
 
-## Portfolio revision 2.0.0
+## 2.0.0 — Phase 2
 
-### Fixed
-- Removed the fatal top-level `await` and misplaced SQL statements from the patient controller.
-- Standardized authenticated user identity as `req.user.id`.
-- Aligned appointment route parameters with controller parameters.
-- Connected JWT and role middleware to protected APIs.
-- Replaced silent conditional route registration with explicit route contracts.
-- Aligned doctor, medical-record, patient, appointment, admin, and authentication handlers.
-- Corrected audit-log inserts to match the SQL schema.
-- Corrected patient and doctor profile creation to match schema requirements.
-- Replaced the placeholder reports endpoint with real aggregate reports.
-- Restricted public registration to patient accounts.
-- Fixed the broken frontend authentication script.
-- Removed hard-coded absolute API URLs so the frontend works when deployed on the same origin.
-- Added role guards to all dashboards.
-- Added HTML escaping for dynamic dashboard values.
-- Corrected duplicate HTML IDs in the patient dashboard.
-- Replaced the static doctor page with a live dashboard API integration.
+- Added structured prescriptions with controlled issuing and PDF export
+- Added invoice aggregates, line items, lifecycle transitions, analytics, and PDF export
+- Added clinical-document upload, metadata, download, deletion, and persistent Docker volume
+- Added optional SMTP delivery with local logging fallback
+- Added doctor availability listing, overlap prevention, and removal
+- Added department administration and role-aware global search
+- Added filtered audit queries and expanded dashboards
+- Added Flyway migrations V4 and V5 with Phase 2 demo data
+- Added backend unit tests and complete React pages for new workflows
+- Changed default host MySQL port from 3306 to 3307
+- Improved public documentation and removed private presentation material
 
-### Added
-- Demo OTP login with expiry and attempt limits.
-- Doctor dashboard, schedule, appointment response, completion, and patient endpoints.
-- Role-aware medical-record read/write APIs.
-- Patient notification read endpoint.
-- Appointment request/confirmation workflow and doctor notifications.
-- Database transactions around registration, booking, room assignment, and state changes.
-- Parameterized SQL throughout the new flows.
-- `.env.example`, `.gitignore`, Docker Compose, and GitHub Actions CI.
-- Syntax checks and route-contract tests.
-- Clear project-origin and attribution documentation.
+## 1.0.0
 
-### Remaining production work
-- Replace demo OTP delivery with an email/SMS provider and store hashed OTPs in Redis.
-- Move browser tokens from `localStorage` to secure HTTP-only cookies.
-- Add API rate limiting and CSRF protection if cookie authentication is used.
-- Add full MySQL integration tests and browser end-to-end tests.
-- Add migrations instead of relying only on a bootstrap schema.
-- Encrypt selected medical fields with proper key management if required by the deployment.
-- Add deployment, observability, backup, and disaster-recovery configuration.
+- Initial Java/Spring Boot, React, MySQL, Redis, JWT, appointment, medical-record, notification, urgent-case, resource, dashboard, Docker, and CI release
