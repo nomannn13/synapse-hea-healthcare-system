@@ -1,0 +1,304 @@
+{
+  "info": {
+    "name": "Synapse HEA API \u2014 Phase 2",
+    "description": "Authentication, appointments, clinical records, prescriptions, invoices, documents, schedules, search and administration.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "patientId",
+      "value": "00000000-0000-0000-0000-000000000103"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login patient",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@synapse.local\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/refresh"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/dashboard",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Global search",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/search?q=card",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "My appointments",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/appointments",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Book appointment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/appointments",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctorId\": \"00000000-0000-0000-0000-000000000102\",\n  \"startAt\": \"2026-08-01T10:00:00Z\",\n  \"reason\": \"Routine check\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prescriptions",
+      "item": [
+        {
+          "name": "List prescriptions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/prescriptions",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Create prescription",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/prescriptions",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"items\": [\n    {\n      \"medicationName\": \"Example medicine\",\n      \"dosage\": \"10 mg\",\n      \"frequency\": \"Once daily\",\n      \"durationDays\": 7,\n      \"instructions\": \"After food\"\n    }\n  ],\n  \"notes\": \"Example only\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/invoices",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Create invoice",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/invoices",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"currency\": \"EUR\",\n  \"items\": [\n    {\n      \"description\": \"Consultation\",\n      \"quantity\": 1,\n      \"unitPrice\": 65\n    }\n  ],\n  \"taxPercent\": 22,\n  \"discountAmount\": 0\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "List patient documents",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents?patientId={{patientId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Doctor schedule",
+      "item": [
+        {
+          "name": "My availability",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/doctors/me/availability",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add availability",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/doctors/me/availability",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startAt\": \"2026-08-01T08:00:00Z\",\n  \"endAt\": \"2026-08-01T16:00:00Z\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Administration",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/reports/summary",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Audit logs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/audit-logs?size=20",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Create department",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/departments",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"ORTH\",\n  \"name\": \"Orthopaedics\",\n  \"description\": \"Musculoskeletal care\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

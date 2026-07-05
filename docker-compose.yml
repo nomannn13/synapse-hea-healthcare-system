@@ -1,39 +1,79 @@
 services:
-  database:
-    image: mysql:8.0
+  mysql:
+    image: mysql:8.4
     environment:
-      MYSQL_ROOT_PASSWORD: root_demo_password
-      MYSQL_DATABASE: hea_database
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-synapse_hea}
+      MYSQL_USER: ${MYSQL_USER:-synapse}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-synapse_dev_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_dev_password}
     ports:
-      - "3306:3306"
+      - "${MYSQL_HOST_PORT:-3307}:3306"
     volumes:
-      - hea_mysql_data:/var/lib/mysql
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot_demo_password"]
-      interval: 5s
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-p${MYSQL_ROOT_PASSWORD:-root_dev_password}",
+        ]
+      interval: 10s
       timeout: 5s
-      retries: 20
+      retries: 12
 
-  app:
-    build: .
-    environment:
-      NODE_ENV: development
-      PORT: 4000
-      DB_HOST: database
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: root_demo_password
-      DB_NAME: hea_database
-      JWT_SECRET: docker-demo-secret-change-before-deployment
-      OTP_ENABLED: "true"
-      DEMO_OTP: "true"
-      CORS_ORIGINS: http://localhost:4000
+  redis:
+    image: redis:7.4-alpine
     ports:
-      - "4000:4000"
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-synapse_hea}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: ${MYSQL_USER:-synapse}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-synapse_dev_password}
+      REDIS_HOST: redis
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-before-production-123456}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+      DOCUMENT_STORAGE_ROOT: /app/data/uploads
+      MAIL_ENABLED: ${MAIL_ENABLED:-false}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@synapse.local}
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_AUTH: ${SMTP_AUTH:-false}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
     depends_on:
-      database:
+      mysql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - document_data:/app/data/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api/v1
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
 
 volumes:
-  hea_mysql_data:
+  mysql_data:
+  document_data:
