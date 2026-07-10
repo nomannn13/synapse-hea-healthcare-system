@@ -207,20 +207,12 @@ docker-compose.yml        MySQL, Redis, API, frontend and document volume
 
 This rebuild keeps the practical actor set—patient, doctor, and administrator—and implements the central requirements from the HEA delivery: appointments, medical records, departments, resources, billing records, prescriptions, role-based access, dashboards, audit logging, notifications, real-time availability, and reliable error handling.
 
-
 ## My contribution
 
 I worked on understanding, integrating, testing, and documenting the full-stack application. My work included backend and frontend integration, authentication and role-based access, database configuration, Docker-based setup, API testing, and technical documentation.
 
 Through this project, I gained practical experience with Java, Spring Boot, React, TypeScript, REST APIs, MySQL, Redis, Docker, software architecture, security concepts, and Git-based development.
 
-# Synapse HEA — Hospital Management System
-
-A full-stack rebuild of the original Synapse/HEA university project using **Java 21, Spring Boot, React, TypeScript, Tailwind CSS, MySQL, Redis, Docker, Nginx, SQL, YAML, and shell scripting**.
-
-The project started as a university software-engineering project and was later rebuilt and expanded to explore modern full-stack architecture, security, deployment, and monitoring concepts.
-
-The repository uses a **modular-monolith architecture** instead of unnecessary microservices. This keeps the domain modules separated while making development, testing, and deployment easier to manage.
 
 ## License
 
