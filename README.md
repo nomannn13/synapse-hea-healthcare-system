@@ -1,8 +1,8 @@
 # Synapse HEA — Hospital Management System
 
-A production-minded rebuild of the original Synapse/HEA university project using **Java 21, Spring Boot, React, TypeScript, Tailwind CSS, MySQL, Redis, Docker, Nginx, SQL, YAML, and shell scripting**.
+A full-stack rebuild of the original Synapse/HEA university project using **Java 21, Spring Boot, React, TypeScript, Tailwind CSS, MySQL, Redis, Docker, Nginx, SQL, YAML, and shell scripting**.
 
-The repository uses a **modular monolith** rather than decorative microservices. Domain boundaries are explicit, deployment stays understandable, and the project remains realistic for a small engineering team.
+The repository uses a **modular-monolith architecture** instead of unnecessary microservices. This keeps the domain modules separated while making development, testing, and deployment easier to manage.
 
 > Educational software only. It is not a certified medical device. Do not use real patient data without professional privacy, security, legal, and clinical review.
 
@@ -10,8 +10,7 @@ The repository uses a **modular monolith** rather than decorative microservices.
 
 ### Patient capabilities
 
-- Secure registration, authentication, refresh-token rotation, logout, and password management
-- Doctor and department discovery with global role-aware search
+- Registration, authentication, refresh-token rotation, logout, and password management
 - Appointment booking, rescheduling, cancellation, history, and notifications
 - Medical-record, prescription, invoice, and clinical-document access
 - Prescription and invoice PDF downloads
@@ -23,7 +22,7 @@ The repository uses a **modular monolith** rather than decorative microservices.
 - Appointment workflow and clinical record creation
 - Structured prescriptions with medication, dosage, frequency, duration, instructions, issue/cancel lifecycle, and PDF export
 - Custom availability blocks with overlap prevention and removal
-- Secure patient-document upload and retrieval
+- Role-restricted patient-document upload and retrieval
 - Transparent urgent-case prioritization support
 - Persisted, live, and optionally emailed notifications
 
@@ -95,8 +94,8 @@ See [`docs/architecture.md`](docs/architecture.md), [`docs/phase-2.md`](docs/pha
 - Git
 
 ```bash
-git clone <your-repository-url>
-cd synapse-hea-java
+git clone https://github.com/nomannn13/synapse-hea-healthcare-system.git
+cd synapse-hea-healthcare-system
 cp .env.example .env
 docker compose up --build
 ```
@@ -207,6 +206,21 @@ docker-compose.yml        MySQL, Redis, API, frontend and document volume
 ## Original-project alignment
 
 This rebuild keeps the practical actor set—patient, doctor, and administrator—and implements the central requirements from the HEA delivery: appointments, medical records, departments, resources, billing records, prescriptions, role-based access, dashboards, audit logging, notifications, real-time availability, and reliable error handling.
+
+
+## My contribution
+
+I worked on understanding, integrating, testing, and documenting the full-stack application. My work included backend and frontend integration, authentication and role-based access, database configuration, Docker-based setup, API testing, and technical documentation.
+
+Through this project, I gained practical experience with Java, Spring Boot, React, TypeScript, REST APIs, MySQL, Redis, Docker, software architecture, security concepts, and Git-based development.
+
+# Synapse HEA — Hospital Management System
+
+A full-stack rebuild of the original Synapse/HEA university project using **Java 21, Spring Boot, React, TypeScript, Tailwind CSS, MySQL, Redis, Docker, Nginx, SQL, YAML, and shell scripting**.
+
+The project started as a university software-engineering project and was later rebuilt and expanded to explore modern full-stack architecture, security, deployment, and monitoring concepts.
+
+The repository uses a **modular-monolith architecture** instead of unnecessary microservices. This keeps the domain modules separated while making development, testing, and deployment easier to manage.
 
 ## License
 
