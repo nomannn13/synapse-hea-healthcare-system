@@ -1,6 +1,16 @@
 import type { ReactNode } from "react";
 import { ArrowRight, ShieldCheck, Stethoscope } from "lucide-react";
 import { Link } from "react-router-dom";
+import { BASE } from "../api/client";
+
+const apiDocsHref = (() => {
+  try {
+    return new URL("/swagger-ui.html", BASE).toString();
+  } catch {
+    return "/swagger-ui.html";
+  }
+})();
+
 export function LandingPage() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#cffafe,transparent_35%),linear-gradient(#fff,#f8fafc)]">
@@ -33,7 +43,7 @@ export function LandingPage() {
               Create patient account <ArrowRight size={18} />
             </Link>
             <a
-              href="http://localhost:8080/swagger-ui.html"
+              href={apiDocsHref}
               className="rounded-xl border border-slate-300 px-5 py-3 font-semibold"
             >
               API docs

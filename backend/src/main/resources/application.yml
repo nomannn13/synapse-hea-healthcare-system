@@ -50,7 +50,7 @@ spring:
       write-dates-as-timestamps: false
 
 server:
-  port: 8080
+  port: ${PORT:8080}
   forward-headers-strategy: framework
   error:
     include-message: never
@@ -61,6 +61,7 @@ app:
     access-token-minutes: 15
     refresh-token-days: 14
     secure-cookies: ${SECURE_COOKIES:false}
+    refresh-cookie-same-site: ${REFRESH_COOKIE_SAMESITE:Strict}
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
   frontend-url: ${FRONTEND_URL:http://localhost:3000}
   storage:

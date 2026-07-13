@@ -110,6 +110,19 @@ Open:
 
 MySQL is exposed on host port **3307** by default to avoid clashing with a local MySQL installation. Containers still communicate internally on port 3306.
 
+## Production deployment
+
+Deployment notes for Docker and Railway are in [`DEPLOYMENT.md`](DEPLOYMENT.md).
+
+The application is production-configurable through environment variables:
+
+- Backend listens on `${PORT:8080}` for managed platforms.
+- MySQL, Redis, JWT, CORS, frontend URL, secure cookies, and upload storage paths are environment-driven.
+- Frontend builds use `VITE_API_BASE_URL`; set it to the public backend HTTPS URL on separate-service hosts such as Railway.
+- Uploaded documents should be stored on a persistent backend volume mounted at `/app/data/uploads`.
+
+Never commit real `.env` files or secrets.
+
 ### Demo accounts
 
 All seeded accounts use `Password123!`.

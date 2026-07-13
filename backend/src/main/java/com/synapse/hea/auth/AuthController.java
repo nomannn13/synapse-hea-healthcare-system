@@ -18,17 +18,20 @@ public class AuthController {
   private final PasswordResetService reset;
   private final CurrentUser current;
   private final boolean secure;
+  private final String sameSite;
 
   public AuthController(
     AuthService s,
     PasswordResetService reset,
     CurrentUser c,
-    @Value("${app.security.secure-cookies}") boolean secure
+    @Value("${app.security.secure-cookies}") boolean secure,
+    @Value("${app.security.refresh-cookie-same-site}") String sameSite
   ) {
     service = s;
     this.reset = reset;
     current = c;
     this.secure = secure;
+    this.sameSite = sameSite;
   }
 
   @PostMapping("/register")
@@ -98,7 +101,7 @@ public class AuthController {
     ResponseCookie cookie = ResponseCookie.from(COOKIE, s.refresh().raw())
       .httpOnly(true)
       .secure(secure)
-      .sameSite("Strict")
+      .sameSite(sameSite)
       .path("/api/v1/auth")
       .maxAge(
         Duration.between(java.time.Instant.now(), s.refresh().expiresAt())
@@ -119,7 +122,7 @@ public class AuthController {
     return ResponseCookie.from(COOKIE, "")
       .httpOnly(true)
       .secure(secure)
-      .sameSite("Strict")
+      .sameSite(sameSite)
       .path("/api/v1/auth")
       .maxAge(Duration.ZERO)
       .build();
